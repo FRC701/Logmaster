@@ -1,12 +1,10 @@
-var fs = require("fs");
+vvar fs = require("fs");
 var child_process = require('child_process');
 var http = require("http");
-var winston = require('winston');
 var express = require("express");
 var sqlite3 = require("sqlite3");
-var socketio = require('socket.io');
 var daemon = require('daemon')();
-var repository = "/home/root/LogMaster1.0/Database-2013.db"
+var repository = "/home/root/Logmaster/Database-2013.db"
 var exists = fs.existsSync(repository);
 var db = new sqlite3.Database(repository);
 
@@ -113,7 +111,7 @@ function sendTable(rows, nColumns, data, res)
        responseText += '</tr>';
     }
     responseText += "</table></body></html>";
-    fs.readFile('/home/root/LogMaster1.0/Webserver/pageLayout.html', 
+    fs.readFile('/home/root/Logmaster/Webserver/pageLayout.html', 
 		'utf8', sendFile);
     function sendFile(err, file)
     {
