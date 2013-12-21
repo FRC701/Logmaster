@@ -1,0 +1,10 @@
+[Unit]
+Description=RFID Webservice
+After=network.target
+[Service]
+Type = forking
+ExecStart=/usr/bin/RFIDWebserver.sh
+
+[Install]
+WantedBy=multi-user.target
+
