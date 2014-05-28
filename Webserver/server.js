@@ -1,12 +1,13 @@
-vvar fs = require("fs");
+var fs = require("fs");
 var child_process = require('child_process');
 var http = require("http");
 var express = require("express");
 var sqlite3 = require("sqlite3");
-var daemon = require('daemon')();
+//var daemon = require('daemon')();
 var repository = "/home/root/Logmaster/Database-2013.db"
 var exists = fs.existsSync(repository);
 var db = new sqlite3.Database(repository);
+var bodyParser = require('body-parser');
 
 var port = 8080;
 		  
@@ -14,6 +15,8 @@ listen(port);
 function listen(port)
 {
 	var app = express();
+	app.use(bodyParser());
+
 	app.get('/', getClassLog);
 	app.get('/class/:name',getClass);
 	app.get('/class', getClass);
@@ -21,8 +24,14 @@ function listen(port)
 	app.get('/log', getLog);
 	app.get('/hours/:name',getHours);
 	app.get('/hours', getHours);
+	app.post('/input', handleInput);
 	var server = http.createServer(app);
 	server.listen(port);
+}
+function handleInput(req, res)
+{
+    console.log("handleInput");
+    res.send("You sent the name " + req.body.username);
 }
 
 function getClassLog(req, res)
