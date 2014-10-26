@@ -1,3 +1,3 @@
 #!/bin/bash
-node /home/root/LogMaster/Webserver/server.js
+node /home/root/Logmaster/Webserver/server.js
 
