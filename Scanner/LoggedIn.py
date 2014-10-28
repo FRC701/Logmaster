@@ -2,6 +2,9 @@ import sqlite3
 import datetime
 from Hours import logHours
 
+#The scanner creates an entry for each tag that it sees at first in the table loggedIn.
+#This tag is then logged in. When it sees the tag again it deletes the entry logging them out.
+
 def is_logged_in(string, conn):
     c = conn.cursor()
     
@@ -29,10 +32,15 @@ def log_out(tag, conn):
 		     ''', (tag,))
     row = c.fetchone()
     timeIn = row[0]
+    
+    #deletes entry logging them out.
     c.execute('''DELETE FROM loggedIn
                  WHERE tag = ?''',(tag,))
    
+    #update hours as they leave.
     hours = logHours(tag, timeIn, conn)
+    
+    #pass hours up. Eventual destination: display().
     return hours
     conn.commit()
 
@@ -48,10 +56,12 @@ def update_logged_in(string, database):
 	      )
 	      ''')
 
-    #Returns true for if they are logging in and false for logging out
+    #Returns hours so scanner will be able to pass them into display.
     if is_logged_in(string, conn):
         hours = log_out(string, conn)
 	returnVal = hours
+	
+    #0 value lets scanner now they are being logged in.
     else:
         log_in(string, conn)
 	returnVal = 0
